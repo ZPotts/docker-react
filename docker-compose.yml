@@ -1,0 +1,31 @@
+version: '3'
+# this whole docker-compose file is a file version of the command
+# docker build -p 3030:3000 -v /app/node_modules -v .:/app
+services: 
+  web: 
+    # here the dot assumes you have a dockerfile in the current directory
+    build:
+      # where do we want the source folders to come from?
+      context: .
+      # if we want to name anything other than the default "Dockerfile"
+      dockerfile: Dockerfile.dev
+    ports: 
+      - "3030:3000"
+    volumes:
+      # /app/node_modules does not map to anything, because you are leaving it empty
+      - /app/node_modules
+      # map the current folder (outside the container) to "app" (inside the container)
+      - .:/app
+  # do you want to run two containers at once, one for testing?
+  # has the same settings as above, but starts with a different command
+  tests:
+    build: 
+      context: . 
+      dockerfile: Dockerfile.dev
+    volumes: 
+      - /app/node_modules
+      - .:/app
+    # command here overrides CMD in the dockerfile
+    command: ["npm", "run", "test"]
+
+    # start this whole thing with 'docker-compose up --build'
