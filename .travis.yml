@@ -3,7 +3,7 @@ services:
   - docker
 
 before-install: 
-  - docker build -t ZPotts/docker-react -f Dockerfile.dev .
+  - docker build -t zpotts/docker-react -f Dockerfile.dev .
  
 script:
-  - docker run -e CI=true ZPotts/docker-react npm run test -- --coverage
+  - docker run -e CI=true zpotts/docker-react npm run test -- --coverage
